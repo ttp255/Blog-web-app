@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+  %}
+  <h1>Hello {{user.user}}</h1>
+  <h1 align="center">{% block header %}Blogs{% endblock %}</h1>
+  <div id="blogs">
+    {% for blog in blogs %}
+    <div class="card border-dark">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <a href="/blogs/{{blog.user.username}}">{{blog.author}}</a>
+        {% if user.user == blog.author %}
+        <div class="btn-group">
+          <button
+            type="button"
+            class="close"
+           
+          >
+            <a href="{{user.user}}/delete-blog/{{blog.id}}"><span aria-hidden="true">&times;</span></a>
+          </button>
+          
+        </div>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div class="card-text">{{blog.blog}}</div>
+            {%if user.user==blog.author%}
+          
+            <button >
+              <a class="nav-item nav-link" id="create-blog" href="/{{user.user}}/update-blog/{{blog.id}}">Update</a>
+            </button>
+            {%endif%}
+        </div>
+       
+        <br />
+        <div class="card-header d-flex justify-content-between align-items-center">
+          {%for comment in blog.comments%}
+          <div>
+            <a href="">{{comment.author}}: {{comment.comment}}- {{comment.date}}</a>
+          </div>
+        
+          
+            {% if user.user == blog.author %}
+            <div class="btn-group">
+              <button
+                type="button"
+                class="close"
+              
+              >
+                <a href="{{user.user}}/blog/{{blog.id}}/delete-comment/{{comment.id}}"><span aria-hidden="true">&times;</span></a>
+              </button>
+            </div>
+             {%endif%}
+          {%endfor%}
+        </div>
+        
+       
+        <form method="POST"
+          class="input-group mb-3"
+          method="blog"
+          action="{{user.user}}/create-comment/{{blog.id}}"
+        >
+          <input
+            type="text"
+            id="comment"
+            name="comment"
+            class="form-control"
+            placeholder="Comment something!"
+          />
+          <button type="submit" class="btn btn-primary">Comment</button>
+        </form>
+      </div>
+      <div class="card-footer text-muted">{{blog.date}}</div>
+    </div>
+    <br/ > {% endfor %}
+  </div>
+     <!-- <script type="text/javascript" >
+      const deleteBlog=async(blog_id)=>{
+        // await fetch(`${user}/delete-blog/${blog_id}`,
+          
+        // )
+        await fetch(`delete-blog/${blog_id}`)
+      
+        window.location.href='/'
+      } 
+
+    </script> -->
+  
+  {%endblock%}

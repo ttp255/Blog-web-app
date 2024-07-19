@@ -1,0 +1,11 @@
+{% extends "base2.html" %} {% block title %}CreateBlog{% endblock %} {% block content
+    %}
+    <h1 align="center">Update Blog</h1>
+    <form method="POST">
+      <textarea name="blog" id="blog" class="form-control">{{blog.blog}}</textarea>
+      <br />
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Update</button>
+      </div>
+    </form>
+    {% endblock %} 

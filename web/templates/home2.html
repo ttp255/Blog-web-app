@@ -1,0 +1,99 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <h1 align="center">{% block header %}Blogs{% endblock %}</h1>
+    <div id="blogs">
+      {% for blog in blogs %}
+      <div class="card border-dark">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <a href="/blogs/{{blog.user.username}}">{{user.user}}</a>
+          {% if user.user == blog.author %}
+          <div class="btn-group">
+            <button
+              type="button"
+              class="btn btn-sm btn-primary dropdown-toggle"
+              data-bs-toggle="dropdown"
+            ></button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/delete-blog/{{user.user}}/{{blog.id}}" class="dropdown-item">Delete</a>
+              </li>
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <div class="card-text">{{blog.blog}}</div>
+          <br />
+          <div class="collapse" id="comments-{{blog.id}}">
+            <div class="card">
+              <div class="card-body" id="comments-expanded-{{blog.id}}">
+                {% for comment in blog.comments %}
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <a href="/blogs/{{comment.user.username}}"
+                      >{{comment.user.user}}</a
+                    >: {{comment.comment}}
+                  </div>
+                  <div>
+                    <small class="text-muted"> {{comment.date}}</small>
+                  
+                    <div class="btn-group">
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-primary dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                      ></button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a
+                            href="{{user.user}}/delete-comment/{{comment.id}}"
+                            class="dropdown-item"
+                            >Delete</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <p class="card-text">
+            {% if blog.comments|length > 0 %}
+            <a data-bs-toggle="collapse" href="#comments-{{blog.id}}" role="button">
+              <small>View {{blog.comments|length}} Comments</small>
+            </a>
+            {% else %}
+            <small class="text-muted">No Comments</small>
+            {% endif %}
+          </p>
+          <form
+            class="input-group mb-3"
+            method="blog"
+            action="{{user.user}}/create-comment/{{blog.id}}"
+          >
+            <input
+              type="text"
+              id="text"
+              name="text"
+              class="form-control"
+              placeholder="Comment something!"
+            />
+            <button type="submit" class="btn btn-primary">Comment</button>
+          </form>
+        </div>
+        <div class="card-footer text-muted">{{blog.date}}</div>
+      </div>
+      <br/ > {% endfor %}
+    </div>
+    {% block footer %}
+    <div align="center">
+      <a href="/create-blog"
+        ><button type="button" class="btn btn-primary btn-lg">
+          Create a blog
+        </button></a
+      >
+    </div>
+    {% endblock %} {% endblock %}
